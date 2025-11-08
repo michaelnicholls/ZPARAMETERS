@@ -1,0 +1,5 @@
+@EndUserText.label: 'service'
+define service Zparameters_svc {
+  expose z_c_parameters;
+  expose z_c_writes;
+}
