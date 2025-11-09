@@ -6,7 +6,9 @@
 "ZDEMO_PARAM"
 ],
 "ASSOCIATED":
-[],
+[
+"Z_I_CLASS_OUTPUT"
+],
 "BASE":
 [],
 "ANNO_REF":

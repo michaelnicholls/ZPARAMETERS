@@ -3,11 +3,11 @@
 {
 "FROM":
 [
-"ZWRITE_OUTPUT"
+"ZCLASS_OUTPUT"
 ],
 "ASSOCIATED":
 [
-"Z_I_PARAMETERS"
+"ZDEMO_I_PARAM"
 ],
 "BASE":
 [],

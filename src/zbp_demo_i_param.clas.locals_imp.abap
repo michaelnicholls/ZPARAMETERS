@@ -34,7 +34,7 @@ CLASS lhc_zdemo_i_param IMPLEMENTATION.
   loop at lt_params ASSIGNING FIELD-SYMBOL(<ls_params>).
   select single * into @data(class_details)
     from zdemo_i_param  where parguid = @<ls_params>-parguid.
-    call method (class_details-class_name)=>main EXPORTING uname = class_details-uname variant = class_details-variant .
+    call method (class_details-class_name)=>main EXPORTING parguid = class_details-parguid .
   endloop.
 
 

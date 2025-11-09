@@ -5,7 +5,7 @@ CLASS zdemo DEFINITION
 
   PUBLIC SECTION.
   class-METHODS: init,
-  main IMPORTING variant type int4 uname type syst_uname.
+  main IMPORTING parguid type sysuuid_x16.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -19,17 +19,33 @@ CLASS zdemo IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD main.
+ " get the parameters
+  select single * from zdemo_i_param into @data(params) where parguid = @parguid.
+"delete old outputs
+  delete from zclass_output WHERE parguid = params-parguid.
+  " get the next line to write
+  select single  max( counter )  into @data(max_count) from zclass_output where parguid = @parguid.
+  data(next_line) = max_count + 1.
 
-  select single * from zdemo_i_param into @data(params) where uname = @sy-uname and variant = @variant.
-  select single max( counter ) into @data(max_count) from zclass_output where class_name = @params-class_name and uname = @sy-uname.
+  data result type p length 9 decimals 2.
+  data status type string.
+  data(prefix) = |The result of { params-int1 } { params-op } { params-int2 } is |.
 
-  max_count = max_count + 1.
+  case params-Op.
+  when '+'. result = params-Int1 + params-Int2.
+  when '-'. result = params-Int1 - params-Int2.
+  when '*'. result = params-Int1 * params-Int2.
+  when '/'. if params-int2 = 0. status = 'No division by zero'. else. result = params-Int1 / params-Int2. ENDIF.
+  when OTHERS. status = |Bad or missing operator|.
+  ENDCASE.
 
-   modify zclass_output from @( value #(    class_name = params-class_name uname = sy-uname text = 'Hello' counter = max_count  ) ).
-   max_count = max_count + 1.
-     modify zclass_output from @( value #(    class_name = params-class_name uname = sy-uname text = 'World' counter = max_count  ) ).
-  max_count = max_count + 1.
-     modify zclass_output from @( value #(    class_name = params-class_name uname = sy-uname text = |{ params-Int1 }| counter = max_count  ) ).
+
+  if status is INITIAL.
+   modify zclass_output from @( value #(    parguid = params-parguid text = |{ prefix } { result }| counter = next_line  ) ).
+   else.
+   modify zclass_output from @( value #(    parguid = params-parguid text = |{ status }| counter = next_line  ) ).
+   endif.
+   next_line = next_line + 1.
 
   ENDMETHOD.
 

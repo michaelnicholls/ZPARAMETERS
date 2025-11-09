@@ -15,5 +15,16 @@ authorization master ( instance )
   field (readonly, numbering : managed) parguid;
   determination setUser on modify {create;}
   action execute ;
+  side effects {action execute affects entity _outputs ;}
+	association _outputs;
+}
+define behavior for z_i_class_output
+persistent table zclass_output
+lock dependent by _params
+authorization dependent by _params
+
+ {
+ field ( readonly) Parguid, Counter;
+association _params {}
 	
 }

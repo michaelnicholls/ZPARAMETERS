@@ -3,7 +3,7 @@
 @Metadata.ignorePropagatedAnnotations: true
 @UI: {headerInfo.title.value: 'class_description'}
 define root view entity zdemo_i_param as select from zdemo_param
-
+composition[0..*] of z_i_class_output as _outputs
 {
      
      @UI.facet: [{ id: 'details', purpose: #STANDARD, position: 10, label: 'Details', type:  #IDENTIFICATION_REFERENCE}]
@@ -28,5 +28,7 @@ define root view entity zdemo_i_param as select from zdemo_param
     int2 as Int2,
         @UI.identification: [{position: 40, label: 'Operator'}]
     @UI.lineItem: [{position: 40, label: 'Operator'}]
-    op as Op
-}
+    op as Op,
+    _outputs
+} 
+where uname = $session.user
