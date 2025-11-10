@@ -6,8 +6,8 @@ CLASS zparam_helper DEFINITION
 
   PUBLIC SECTION.
    class-METHODS:
-   clear_output IMPORTING parguid type sysuuid_x16,
-    write_line importing parguid type sysuuid_x16 text type string.
+   clear_output IMPORTING parguid type sysuuid_x16, " clears existing outputs
+    write_line importing parguid type sysuuid_x16 text type string. "writes a line to the end of the outputs
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -20,6 +20,7 @@ CLASS zparam_helper IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD write_line.
+  " get the highest line number so far
 select single  max( counter )  into @data(max_count) from zclass_output where parguid = @parguid.
 
 modify zclass_output from @( value #(    parguid = parguid text = text counter = max_count + 1  ) ).

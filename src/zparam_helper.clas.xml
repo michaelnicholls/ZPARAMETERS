@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>ZPARAM_HELPER</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>helper</DESCRIPT>
+    <DESCRIPT>helper class for parameter handling</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
