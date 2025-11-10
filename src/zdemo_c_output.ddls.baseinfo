@@ -3,7 +3,7 @@
 {
 "FROM":
 [
-"Z_I_CLASS_OUTPUT"
+"ZDEMO_I_OUTPUT"
 ],
 "ASSOCIATED":
 [
@@ -12,7 +12,7 @@
 ],
 "BASE":
 [
-"Z_I_CLASS_OUTPUT"
+"ZDEMO_I_OUTPUT"
 ],
 "ANNO_REF":
 [],

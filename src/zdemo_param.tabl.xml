@@ -7,7 +7,7 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>parameters for zdemo</DDTEXT>
+    <DDTEXT>parameters for zdemo - add your parameters after variant</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <CONTFLAG>A</CONTFLAG>
     <EXCLASS>1</EXCLASS>

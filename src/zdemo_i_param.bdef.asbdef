@@ -13,12 +13,12 @@ authorization master ( instance )
   delete;
   field ( readonly ) Uname, Variant;
   field (readonly, numbering : managed) parguid;
-  determination setUser on modify {create;}
+  determination setUser on modify {create;} // specific for zdemo
   action execute ;
-  side effects {action execute affects entity _outputs ;}
+
 	association _outputs;
 }
-define behavior for z_i_class_output
+define behavior for ZDEMO_I_output
 persistent table zclass_output
 lock dependent by _params
 authorization dependent by _params

@@ -4,8 +4,9 @@ CLASS zdemo DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-  class-METHODS: init,
-  main IMPORTING parguid type sysuuid_x16.
+    CLASS-METHODS:
+      " make sure you have a MAIN method with this importing parameter
+      main IMPORTING parguid TYPE sysuuid_x16.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -14,38 +15,40 @@ ENDCLASS.
 
 
 CLASS zdemo IMPLEMENTATION.
-  METHOD init.
 
-  ENDMETHOD.
 
   METHOD main.
- " get the parameters
-  select single * from zdemo_i_param into @data(params) where parguid = @parguid.
-"delete old outputs
-  delete from zclass_output WHERE parguid = params-parguid.
-  " get the next line to write
-  select single  max( counter )  into @data(max_count) from zclass_output where parguid = @parguid.
-  data(next_line) = max_count + 1.
+    " do your work here
 
-  data result type p length 9 decimals 2.
-  data status type string.
-  data(prefix) = |The result of { params-int1 } { params-op } { params-int2 } is |.
+    " get the parameters
+    SELECT SINGLE * FROM zdemo_i_param INTO @DATA(params) WHERE parguid = @parguid.
+    " make local variables
 
-  case params-Op.
-  when '+'. result = params-Int1 + params-Int2.
-  when '-'. result = params-Int1 - params-Int2.
-  when '*'. result = params-Int1 * params-Int2.
-  when '/'. if params-int2 = 0. status = 'No division by zero'. else. result = params-Int1 / params-Int2. ENDIF.
-  when OTHERS. status = |Bad or missing operator|.
-  ENDCASE.
+    FINAL(int1) = params-Int1.
+    FINAL(int2) = params-int2.
+    FINAL(op) = params-op.
+    "delete old outputs
+    zparam_helper=>clear_output(   parguid = parguid ).
 
+    DATA result TYPE p LENGTH 9 DECIMALS 2.
+    DATA status TYPE string.
+    DATA(prefix) = |The result of { int1 } { op } { int2 } is |.
 
-  if status is INITIAL.
-   modify zclass_output from @( value #(    parguid = params-parguid text = |{ prefix } { result }| counter = next_line  ) ).
-   else.
-   modify zclass_output from @( value #(    parguid = params-parguid text = |{ status }| counter = next_line  ) ).
-   endif.
-   next_line = next_line + 1.
+    CASE Op.
+      WHEN '+'. result = Int1 + Int2.
+      WHEN '-'. result = Int1 - Int2.
+      WHEN '*'. result = Int1 * Int2.
+      WHEN '/'. IF int2 = 0. status = 'No division by zero'. ELSE. result = Int1 / Int2. ENDIF.
+      WHEN OTHERS. status = |Bad or missing operator { op }|.
+    ENDCASE.
+
+    DATA(now) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER }|.
+    IF status IS INITIAL.
+      zparam_helper=>write_line(   parguid = parguid text = |{ now } : { prefix } { result }| ).
+    ELSE.
+      zparam_helper=>write_line(     parguid = parguid text = |{ now } : { status }|   ).
+    ENDIF.
+
 
   ENDMETHOD.
 
